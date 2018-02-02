@@ -1,21 +1,21 @@
 <h1>Edit Student</h1>
-<form action="/update/<%= student[:id] %>" method="post">
+<form action="/update/<%= student.id %>" method="post">
   <p>
     <label>
       Name
-      <input type="text" name="name" value="<%= student[:name] %>">
+      <input type="text" name="name" value="<%= student.name %>">
     </label>
   </p>
   <p>
     <label>
       Email
-      <input type="text" name="email" value="<%= student[:email] %>">
+      <input type="text" name="email" value="<%= student.email %>">
     </label>
   </p>
   <p>
     <label>
       Discord Username
-      <input type="text" name="discord" value="<%= student[:discord] %>">
+      <input type="text" name="discord" value="<%= student.discord %>">
     </label>
   </p>
   <p>

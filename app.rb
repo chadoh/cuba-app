@@ -15,7 +15,12 @@ Cuba.define do
   on root do
     student_array = db.execute("SELECT * FROM students")
     students = student_array.map do |id, name, email, discord|
-      { :id => id, :name => name, :email => email, :discord => discord }
+      OpenStruct.new(
+        :id => id,
+        :name => name,
+        :email => email,
+        :discord => discord
+      )
     end
     res.write view("index", students: students)
   end
@@ -39,7 +44,7 @@ Cuba.define do
     student = db.execute(
       "SELECT * FROM students WHERE id=?", id
     ).first
-    student = { id: student[0], name: student[1], email: student[2], discord: student[3] }
+    student = OpenStruct.new(id: student[0], name: student[1], email: student[2], discord: student[3])
 
     res.write view("edit", student: student)
   end
