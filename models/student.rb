@@ -18,4 +18,11 @@ class Student
       Student.new(id, name, email, discord)
     end
   end
+
+  def self.find(id)
+    student = DB.execute(
+      "SELECT * FROM students WHERE id=?", id
+    ).first
+    Student.new(student[0], student[1], student[2], student[3])
+  end
 end

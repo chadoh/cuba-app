@@ -33,12 +33,7 @@ Cuba.define do
   end
 
   on get, "edit/:id" do |id|
-    student = db.execute(
-      "SELECT * FROM students WHERE id=?", id
-    ).first
-    student = OpenStruct.new(id: student[0], name: student[1], email: student[2], discord: student[3])
-
-    res.write view("edit", student: student)
+    res.write view("edit", student: Student.find(id))
   end
 
   on post, "update/:id" do |id|
