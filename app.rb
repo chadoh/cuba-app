@@ -20,28 +20,46 @@ Cuba.define do
     res.write view("index", students: students)
   end
 
-  on "new" do
+  on get, "new" do
     res.write view("new")
   end
 
-  on post do
-    on "create" do
-      name = req.params["name"]
-      email = req.params["email"]
-      discord = req.params["discord"]
-      db.execute(
-        "INSERT INTO students (name, email, discord) VALUES (?, ?, ?)",
-        name, email, discord
-      )
-      res.redirect "/"
-    end
+  on post, "create" do
+    name = req.params["name"]
+    email = req.params["email"]
+    discord = req.params["discord"]
+    db.execute(
+      "INSERT INTO students (name, email, discord) VALUES (?, ?, ?)",
+      name, email, discord
+    )
+    res.redirect "/"
+  end
 
-    on "delete/:id" do |id|
-      db.execute(
-        "DELETE FROM students WHERE id=#{id}"
-      )
-      res.redirect "/"
-    end
+  on get, "edit/:id" do |id|
+    student = db.execute(
+      "SELECT * FROM students WHERE id=?", id
+    ).first
+    student = { id: student[0], name: student[1], email: student[2], discord: student[3] }
+
+    res.write view("edit", student: student)
+  end
+
+  on post, "update/:id" do |id|
+    db.execute(
+      "UPDATE students SET (name, email, discord)=(?, ?, ?) WHERE id=?",
+      req.params['name'],
+      req.params['email'],
+      req.params['discord'],
+      id,
+    )
+    res.redirect "/"
+  end
+
+  on post, "delete/:id" do |id|
+    db.execute(
+      "DELETE FROM students WHERE id=#{id}"
+    )
+    res.redirect "/"
   end
 
   def not_found
